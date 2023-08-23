@@ -1,9 +1,14 @@
+#ifndef WIFISCANNER_H
+#define WIFISCANNER_H
 #include <WiFi.h>
+#include "tftScreen.h"
 
-int n = 0;
-String ssid = "";
-String pass = "";
+extern int n;
+extern String ssid;
+extern  String pass;
 
 int wifiScan(Adafruit_ILI9341 &tft);
 int wifiInit(Adafruit_ILI9341 &tft, unsigned long &timeout, int &trial);
 void wifiConnection(Adafruit_ILI9341 &tft, int no_ssid);
+
+#endif

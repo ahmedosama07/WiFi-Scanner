@@ -1,6 +1,10 @@
 #include "wifiScanner.h"
 #include "tftScreen.h"
 
+int n = 0;
+String ssid = "";
+String pass = "";
+
 int wifiScan(Adafruit_ILI9341 &tft)
 {
   tft.begin();
