@@ -51,19 +51,7 @@ void screenScroll(Adafruit_ILI9341 &tft, int n)
           for(int i = j; i < n; i++)
           {
             line++;
-            tft.print(i + 1);
-            tft.print(": ");
-            tft.print(WiFi.SSID(i));
-            tft.print(" (");
-            tft.print(WiFi.RSSI(i));
-            tft.print(")");
-            if((WiFi.encryptionType(i) == WIFI_AUTH_OPEN))
-            {
-              Serial.println("*");
-              tft.println("*");
-            }
-            delay(10);
-            Serial.println("");
+            screenShowOnce(tft, i);
             if(line >= MAXLINE) break;
           }
           tft.println("Enter the no. of the network you want to connect");
@@ -86,25 +74,30 @@ void screenShow(Adafruit_ILI9341 &tft, int n)
   tft.setTextColor(ILI9341_BLUE);
   for(int i = 0; i < n; i++)
   {
-    Serial.print(i + 1);
-    Serial.print(": ");
-    Serial.print(WiFi.SSID(i));
-    Serial.print(" (");
-    Serial.print(WiFi.RSSI(i));
-    Serial.print(")");
-
-    tft.print(i + 1);
-    tft.print(": ");
-    tft.print(WiFi.SSID(i));
-    tft.print(" (");
-    tft.print(WiFi.RSSI(i));
-    tft.print(")");
-    if((WiFi.encryptionType(i) == WIFI_AUTH_OPEN))
-    {
-      Serial.println("*");
-      tft.println("*");
-    }
-    delay(10);
-    Serial.println("");
+    screenShowOnce(tft, i);
   }
+}
+
+void screenShowOnce(Adafruit_ILI9341 &tft, int i)
+{
+  Serial.print(i + 1);
+  Serial.print(": ");
+  Serial.print(WiFi.SSID(i));
+  Serial.print(" (");
+  Serial.print(WiFi.RSSI(i));
+  Serial.print(")");
+
+  tft.print(i + 1);
+  tft.print(": ");
+  tft.print(WiFi.SSID(i));
+  tft.print(" (");
+  tft.print(WiFi.RSSI(i));
+  tft.print(")");
+  if((WiFi.encryptionType(i) == WIFI_AUTH_OPEN))
+  {
+    Serial.println("*");
+    tft.println("*");
+  }
+  delay(10);
+  Serial.println("");
 }
