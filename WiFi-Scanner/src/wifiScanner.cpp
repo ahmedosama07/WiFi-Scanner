@@ -14,9 +14,10 @@ int wifiScan(Adafruit_ILI9341 &tft)
   tft.setTextSize(2);
   tft.print("Connecting to WiFi");
   n = WiFi.scanNetworks();
-  
-  //int x = WiFi.scanComplete();
+  //n=20;
+  int x = WiFi.scanComplete();
   Serial.println("Scan started");
+  clearScreen(tft);
   tft.println("Scan started");
   delay(500);
 
@@ -45,7 +46,7 @@ int wifiScan(Adafruit_ILI9341 &tft)
   
   wifiConnection(tft, no_ssid);
 
-  return n;
+  return x;
 }
 
 int wifiInit(Adafruit_ILI9341 &tft, unsigned long &timeout, int &trial)
@@ -62,6 +63,7 @@ int wifiInit(Adafruit_ILI9341 &tft, unsigned long &timeout, int &trial)
     while((WiFi.status() != WL_CONNECTED) && (millis() - timeout < 8000))
     {
         Serial.print(".");
+        tft.print(".");
         delay(1000);
     }
 
@@ -114,13 +116,50 @@ void wifiConnection(Adafruit_ILI9341 &tft, int no_ssid)
         tft.setTextColor(ILI9341_BLUE);
         tft.println("Please enter the password of the network you chose");
         Serial.println("Please enter the password of the network you chose");
-        while (Serial.available() == 0){}
+        
+        while (true) {
+        while (!Serial.available()) {
+          // Wait for user input
+          }
+
         pass = Serial.readString();
-        for(int i = 0; i < pass.length(); i++) tft.print("*");
-        tft.println();
+        pass.trim(); // Remove leading and trailing whitespace
+        
+        if (pass.length() >= 8) {
+          for(int i = 0; i < pass.length(); i++) tft.print("*");
+          tft.println();
+          break; // Exit the loop if the password length is sufficient
+        } else {
+          Serial.println("Password should be at least 8 characters. Please try again:");
+          tft.println("Password should be at least 8 characters. Please try again:");
+        }
+      }
+        
+        
     }
     else
     {
         pass = "";
     }
 }
+
+/*
+String getWiFiStatus(int Status){
+    switch(Status){
+        case WL_IDLE_STATUS:
+        return "WL_IDLE_STATUS";
+        case WL_SCAN_COMPLETED:
+        return "WL_SCAN_COMPLETED";
+        case WL_NO_SSID_AVAIL:
+        return "WL_NO_SSID_AVAIL";
+        case WL_CONNECT_FAILED:
+        return "WL_CONNECT_FAILED";
+        case WL_CONNECTION_LOST:
+        return "WL_CONNECTION_LOST";
+        case WL_CONNECTED:
+        return "WL_CONNECTED";
+        case WL_DISCONNECTED:
+        return "WL_DISCONNECTED";
+    }
+}
+*/

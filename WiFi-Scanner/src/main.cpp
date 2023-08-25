@@ -10,6 +10,7 @@ unsigned long timeout=0;
 int trial = 0;
 
 #define DOWNBTN 5
+#define UPBTN 22
 
 #define TFT_DC 2
 #define TFT_CS 15
@@ -19,6 +20,7 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 void setup() {
   pinMode(DOWNBTN, INPUT_PULLUP);
+  pinMode(UPBTN, INPUT_PULLUP);
 
   Serial.begin(115200);
   
@@ -26,6 +28,7 @@ void setup() {
   wifiScan(tft);
   wifiInit(tft, timeout, trial);
 
+  tft.setTextSize(3);
   tft.print("\nOK! IP=");
   tft.println(WiFi.localIP());
 }
@@ -41,6 +44,8 @@ void loop() {
     if((millis() - timestart > 2000) && (WiFi.status()  != WL_CONNECTED))
     {
       Serial.println("Reconnecting to Wifi...");
+      tft.setTextSize(3);
+      tft.println("Reconnecting to Wifi...");
       WiFi.disconnect();
       wifiInit(tft, timeout, trial);
       trial++;
