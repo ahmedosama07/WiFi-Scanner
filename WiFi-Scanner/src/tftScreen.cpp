@@ -25,6 +25,7 @@ void screenScroll(Adafruit_ILI9341 &tft, int n)
     showTrailer(tft);
     int endScroll = 0;
     int selected = 0;
+    scroll :
     while(!endScroll && !selected)
       {
         if(digitalRead(DOWNBTN) == LOW)
@@ -68,6 +69,7 @@ void screenScroll(Adafruit_ILI9341 &tft, int n)
           if(Serial.available()) selected = 1;
         }
       }
+      if(digitalRead(UPBTN) == LOW) goto scroll;
 }
 
 void screenShow(Adafruit_ILI9341 &tft, int n)
